@@ -6,7 +6,7 @@ to [Annotator.js](https://github.com/openannotation/annotator).
 The goal is to provide a discoverable annotation interface that integrates
 automatically with any website.
 
-See [demo.html](demo.html) for a demonstration.
+See [index.html](index.html) for a demonstration.
 
 ## Features
 - Automatic detection of paragraphs with actual content (no side bars, menus, etc).
