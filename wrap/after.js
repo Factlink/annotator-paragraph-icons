@@ -1,0 +1,1 @@
+}).call({}, annotator.util.$);

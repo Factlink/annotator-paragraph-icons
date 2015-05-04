@@ -1,0 +1,94 @@
+$max-z-index  : 2147483647;
+
+$control_visibility_transition_time : 300ms; //keep in sync with coffeescript
+
+%default-font {
+  font: normal normal normal 13px/1.5 "lucida grande", tahoma, verdana, arial, sans-serif;
+}
+
+%fadable-control {
+  visibility: hidden;
+
+  &.factlink-control-visible {
+    visibility: visible;
+  }
+}
+
+// This is done because of transitions crashes on iOS devices.
+// For now we're disabling transitions on devices smaller than 1025 pixels
+// Most PC have bigger screens so, this works perfect for PCs
+@media only screen and (min-device-width: 1025px) {
+  %fadable-control {
+    opacity: 0;
+    visibility: hidden;
+
+    transition: opacity $control_visibility_transition_time,
+                visibility 0s $control_visibility_transition_time;
+    //note the time unit is REQUIRED even for 0s!  FF won't accept 0.
+
+    &.factlink-control-visible {
+      opacity: 1;
+      visibility: visible;
+
+      transition: opacity $control_visibility_transition_time,
+                  visibility 0s 0s;
+    }
+  }
+}
+
+%default-font {
+  font: normal normal normal 13px/1.5 "lucida grande", tahoma, verdana, arial, sans-serif;
+}
+
+%comment-icon {
+  @extend %default-font;
+  font-weight: bold;
+  -webkit-font-smoothing: auto;
+
+  position: relative;
+  display: inline-block;
+  min-width: 1.4em;
+  height: 1.1em;
+  border-radius: 0.25em;
+  padding: 0 0.2em;
+  line-height: 1;
+  vertical-align: baseline;
+  top: -0.15em;
+  text-align: center;
+  -moz-box-sizing: border-box; box-sizing: border-box;
+}
+
+%comment-icon-triangle {
+  position: absolute;
+  display: block;
+
+  top: 1em;
+  left: 20%;
+  border-style: solid;
+  border-width: 0.43em 0.55em 0 0;
+  border-color: transparent;
+}
+
+
+factlink-icon-button {
+  @extend %fadable-control;
+  position: absolute;
+  display: block;
+  cursor: pointer;
+  z-index: $max-z-index - 1;
+  margin-left: 0.1em;
+}
+
+factlink-icon-button-bubble {
+  @extend %comment-icon;
+
+  opacity: 0.5;
+}
+
+factlink-icon-button:hover factlink-icon-button-bubble {
+  opacity: 1;
+}
+
+factlink-icon-button-bubble-triangle {
+  @extend %comment-icon-triangle;
+}
