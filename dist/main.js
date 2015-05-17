@@ -300,15 +300,8 @@
       return textLength >= 50;
     };
 
-    ParagraphButtons.prototype._containsFactlink = function(el) {
-      return $(el).find('.factlink').length > 0;
-    };
-
     ParagraphButtons.prototype._addParagraphButton = function(el) {
       if (!this._paragraphHasContent(el)) {
-        return;
-      }
-      if (this._containsFactlink(el)) {
         return;
       }
       return new global.ParagraphIconButtonContainer(el, (function(_this) {

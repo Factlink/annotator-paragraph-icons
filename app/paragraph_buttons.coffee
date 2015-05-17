@@ -10,12 +10,8 @@ class global.ParagraphButtons
 
     textLength >= 50
 
-  _containsFactlink: (el) ->
-    $(el).find('.factlink').length > 0
-
   _addParagraphButton: (el) ->
     return unless @_paragraphHasContent(el)
-    return if @_containsFactlink(el)
 
     new global.ParagraphIconButtonContainer el, =>
       @_onClick(el)
