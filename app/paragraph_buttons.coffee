@@ -1,4 +1,6 @@
 class global.ParagraphButtons
+  constructor: (@_onClick) ->
+
   _paragraphHasContent: (el) ->
     $clonedEl = $(el).clone()
     $clonedEl.find('a').remove() # Strip links
@@ -15,7 +17,8 @@ class global.ParagraphButtons
     return unless @_paragraphHasContent(el)
     return if @_containsFactlink(el)
 
-    new global.ParagraphIconButtonContainer el
+    new global.ParagraphIconButtonContainer el, =>
+      @_onClick(el)
 
   _addParagraphButtonsBatch: (elements) ->
     for el in elements[0...10]

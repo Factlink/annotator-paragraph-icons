@@ -86,18 +86,8 @@ class IconButton
         {}
 
 
-textFromElement = (element) ->
-  selection = document.getSelection()
-  selection.selectAllChildren(element)
-  text = selection.toString()
-  # note: IE11's toString includes invisible text content such as display:none stuff. no idea how to fix this bug
-
-  selection.removeAllRanges()
-  text.trim()
-
-
 class global.ParagraphIconButtonContainer
-  constructor: (paragraphElement) ->
+  constructor: (paragraphElement, onClick) ->
     @$paragraph = $(paragraphElement)
 
     @_iconButton = new IconButton
@@ -105,7 +95,7 @@ class global.ParagraphIconButtonContainer
       targetElement: @$paragraph[0]
       onmouseenter: => @_attentionSpan?.gainAttention()
       onmouseleave: => @_attentionSpan?.loseAttention()
-      onclick: @_onClick
+      onclick: onClick
 
     @_attentionSpan = new global.AttentionSpan
       wait_for_neglection: 500
@@ -130,13 +120,3 @@ class global.ParagraphIconButtonContainer
     @_iconButton.destroy()
     @_attentionSpan?.destroy()
     @_robustParagraphHover?.destroy()
-
-  _onClick: =>
-    text = textFromElement @$paragraph[0]
-    alert 'TODO: saving this annotation: ' + text
-    # siteTitle = document.title
-    # siteUrl = FactlinkJailRoot.siteUrl()
-
-    # FactlinkJailRoot.openModalOverlay()
-    # FactlinkJailRoot.factlinkCoreEnvoy 'prepareNewFactlink',
-    #   text, siteUrl, siteTitle, null

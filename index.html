@@ -127,6 +127,13 @@
       var app = new annotator.App();
       app.include(annotator.ui.main);
       app.include(window.paragraphUi);
+      app.include(function (registry) {
+        return {
+          createFromParagraph: function (p) {
+             alert(p.textContent);
+          }
+        };
+      });
       app.start();
     </script>
   </body>

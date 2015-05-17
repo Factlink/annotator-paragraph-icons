@@ -92,7 +92,7 @@
 }).call(this);
 
 (function() {
-  var IconButton, hostATag, hrefToHost, textFromElement,
+  var IconButton, hostATag, hrefToHost,
     bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
   hostATag = document.createElement('a');
@@ -191,18 +191,8 @@
 
   })();
 
-  textFromElement = function(element) {
-    var selection, text;
-    selection = document.getSelection();
-    selection.selectAllChildren(element);
-    text = selection.toString();
-    selection.removeAllRanges();
-    return text.trim();
-  };
-
   global.ParagraphIconButtonContainer = (function() {
-    function ParagraphIconButtonContainer(paragraphElement) {
-      this._onClick = bind(this._onClick, this);
+    function ParagraphIconButtonContainer(paragraphElement, onClick) {
       this._onHideAllParagraphButtons = bind(this._onHideAllParagraphButtons, this);
       this._showOnlyThisParagraphButton = bind(this._showOnlyThisParagraphButton, this);
       this.$paragraph = $(paragraphElement);
@@ -221,7 +211,7 @@
             return (ref = _this._attentionSpan) != null ? ref.loseAttention() : void 0;
           };
         })(this),
-        onclick: this._onClick
+        onclick: onClick
       });
       this._attentionSpan = new global.AttentionSpan({
         wait_for_neglection: 500,
@@ -266,12 +256,6 @@
       return (ref1 = this._robustParagraphHover) != null ? ref1.destroy() : void 0;
     };
 
-    ParagraphIconButtonContainer.prototype._onClick = function() {
-      var text;
-      text = textFromElement(this.$paragraph[0]);
-      return alert('TODO: saving this annotation: ' + text);
-    };
-
     return ParagraphIconButtonContainer;
 
   })();
@@ -303,7 +287,9 @@
 
 (function() {
   global.ParagraphButtons = (function() {
-    function ParagraphButtons() {}
+    function ParagraphButtons(_onClick) {
+      this._onClick = _onClick;
+    }
 
     ParagraphButtons.prototype._paragraphHasContent = function(el) {
       var $clonedEl, textLength;
@@ -325,7 +311,11 @@
       if (this._containsFactlink(el)) {
         return;
       }
-      return new global.ParagraphIconButtonContainer(el);
+      return new global.ParagraphIconButtonContainer(el, (function(_this) {
+        return function() {
+          return _this._onClick(el);
+        };
+      })(this));
     };
 
     ParagraphButtons.prototype._addParagraphButtonsBatch = function(elements) {
@@ -398,7 +388,11 @@
   window.paragraphUi = function() {
     return {
       start: function(app) {
-        return (new global.ParagraphButtons).addParagraphButtons();
+        var paragraphButtons;
+        paragraphButtons = new global.ParagraphButtons(function(el) {
+          return app.runHook('createFromParagraph', [el]);
+        });
+        return paragraphButtons.addParagraphButtons();
       }
     };
   };

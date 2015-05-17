@@ -1,3 +1,6 @@
 window.paragraphUi = ->
   start: (app) ->
-    (new global.ParagraphButtons).addParagraphButtons()
+    paragraphButtons = new global.ParagraphButtons (el) ->
+      app.runHook 'createFromParagraph', [el]
+
+    paragraphButtons.addParagraphButtons()
