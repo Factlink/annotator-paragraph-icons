@@ -29,13 +29,12 @@ paragraph.
 - Fast -- optimised distinct descendants algorithm and batch rendering of icons.
 
 ## TODO
-- On mobile the interface doesn't work well currently, though that should be
-  relatively easy to fix.
 - No complete separation of scripts from host page yet. Ideally both the paragraph
   icons and Annotator.js itself would be loaded in a
   [jail iframe](https://github.com/Factlink/js-library/blob/825adb0548af92fc21d6f22b2deb9ec768a4a3f2/app/js/loader/loader_common.coffee)
   to further isolate scripts.
-- Refreshing when page content changes.
+- Refreshing when page content changes (contact me if you need this, I'd be happy
+  to spend some time implementing this -- @JanPaul123).
 
 ## Development
 ```bash

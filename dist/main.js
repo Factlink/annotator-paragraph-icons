@@ -109,11 +109,8 @@
       this.$el = $("<factlink-icon-button>\n  <factlink-icon-button-bubble>\n    " + options.content + "\n    <factlink-icon-button-bubble-triangle></factlink-icon-button-bubble-triangle>\n  </factlink-icon-button-bubble>\n</factlink-icon-button>");
       global.$factlinkCoreContainer.append(this.$el);
       this._setStyles();
-      this._robustHover = new global.RobustHover({
-        $el: this.$el,
-        mouseenter: options.onmouseenter,
-        mouseleave: options.onmouseleave
-      });
+      this.$el.on('mousemove touchstart touchmove', options.onmouseenter);
+      this.$el.on('mouseleave', options.onmouseleave);
       this.$el.on('click', options.onclick);
       this._tether = new global.Tether(this._tether_options());
     }
@@ -139,7 +136,6 @@
 
     IconButton.prototype.destroy = function() {
       this._tether.destroy();
-      this._robustHover.destroy();
       return this.$el.remove();
     };
 
@@ -217,28 +213,30 @@
         wait_for_neglection: 500,
         onAttentionGained: (function(_this) {
           return function() {
-            return _this._iconButton.fadeIn();
+            _this._iconButton.fadeIn();
+            return _this._visible = true;
           };
         })(this),
         onAttentionLost: (function(_this) {
           return function() {
-            return _this._iconButton.fadeOut();
+            _this._iconButton.fadeOut();
+            return _this._visible = false;
           };
         })(this)
       });
-      this._robustParagraphHover = new global.RobustHover({
-        $el: this.$paragraph,
-        mouseenter: this._showOnlyThisParagraphButton,
-        mouseleave: (function(_this) {
-          return function() {
-            return _this._attentionSpan.loseAttention();
-          };
-        })(this)
-      });
+      this.$paragraph.on('mousemove touchstart touchmove', this._showOnlyThisParagraphButton);
+      this.$paragraph.on('mouseleave', (function(_this) {
+        return function() {
+          return _this._attentionSpan.loseAttention();
+        };
+      })(this));
       $(document).on('hideAllParagraphButtons', this._onHideAllParagraphButtons);
     }
 
     ParagraphIconButtonContainer.prototype._showOnlyThisParagraphButton = function() {
+      if (this._visible) {
+        return;
+      }
       $(document).trigger('hideAllParagraphButtons');
       return this._attentionSpan.gainAttention();
     };
@@ -248,12 +246,9 @@
     };
 
     ParagraphIconButtonContainer.prototype.destroy = function() {
-      var ref, ref1;
+      var ref;
       this._iconButton.destroy();
-      if ((ref = this._attentionSpan) != null) {
-        ref.destroy();
-      }
-      return (ref1 = this._robustParagraphHover) != null ? ref1.destroy() : void 0;
+      return (ref = this._attentionSpan) != null ? ref.destroy() : void 0;
     };
 
     return ParagraphIconButtonContainer;
@@ -389,56 +384,6 @@
       }
     };
   };
-
-}).call(this);
-
-(function() {
-  var bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
-
-  global.RobustHover = (function() {
-    function RobustHover(_options) {
-      this._options = _options;
-      this._onMouseLeave = bind(this._onMouseLeave, this);
-      this._onMouseEnter = bind(this._onMouseEnter, this);
-      this._hovered = false;
-      this._options.$el.on('mousemove', this._onMouseEnter);
-      this._options.$el.on('mouseleave', this._onMouseLeave);
-    }
-
-    RobustHover.prototype.destroy = function() {
-      var ref;
-      this._options.$el.off('mousemove', this._onMouseEnter);
-      this._options.$el.off('mouseleave', this._onMouseLeave);
-      return (ref = this._options.$externalDocument) != null ? ref.off('mousemove', this._onMouseLeave) : void 0;
-    };
-
-    RobustHover.prototype._onMouseEnter = function() {
-      var base, ref;
-      if (this._hovered) {
-        return;
-      }
-      if ((ref = this._options.$externalDocument) != null) {
-        ref.on('mousemove', this._onMouseLeave);
-      }
-      this._hovered = true;
-      return typeof (base = this._options).mouseenter === "function" ? base.mouseenter() : void 0;
-    };
-
-    RobustHover.prototype._onMouseLeave = function() {
-      var base, ref;
-      if (!this._hovered) {
-        return;
-      }
-      if ((ref = this._options.$externalDocument) != null) {
-        ref.off('mousemove', this._onMouseLeave);
-      }
-      this._hovered = false;
-      return typeof (base = this._options).mouseleave === "function" ? base.mouseleave() : void 0;
-    };
-
-    return RobustHover;
-
-  })();
 
 }).call(this);
 

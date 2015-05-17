@@ -21,12 +21,9 @@ class IconButton
 
     @_setStyles()
 
-    @_robustHover = new global.RobustHover
-      $el: @$el
-      mouseenter: options.onmouseenter
-      mouseleave: options.onmouseleave
+    @$el.on 'mousemove touchstart touchmove', options.onmouseenter
+    @$el.on 'mouseleave', options.onmouseleave
     @$el.on 'click', options.onclick
-
 
     @_tether = new global.Tether(@_tether_options())
 
@@ -45,7 +42,6 @@ class IconButton
 
   destroy: ->
     @_tether.destroy()
-    @_robustHover.destroy()
     @$el.remove()
 
   fadeIn: ->
@@ -99,16 +95,16 @@ class global.ParagraphIconButtonContainer
 
     @_attentionSpan = new global.AttentionSpan
       wait_for_neglection: 500
-      onAttentionGained: => @_iconButton.fadeIn()
-      onAttentionLost: => @_iconButton.fadeOut()
+      onAttentionGained: => @_iconButton.fadeIn(); @_visible = true
+      onAttentionLost: => @_iconButton.fadeOut(); @_visible = false
 
-    @_robustParagraphHover = new global.RobustHover
-      $el: @$paragraph
-      mouseenter: @_showOnlyThisParagraphButton
-      mouseleave: => @_attentionSpan.loseAttention()
+    @$paragraph.on 'mousemove touchstart touchmove', @_showOnlyThisParagraphButton
+    @$paragraph.on 'mouseleave', => @_attentionSpan.loseAttention()
     $(document).on 'hideAllParagraphButtons', @_onHideAllParagraphButtons
 
   _showOnlyThisParagraphButton: =>
+    return if @_visible
+
     $(document).trigger 'hideAllParagraphButtons'
     @_attentionSpan.gainAttention()
 
@@ -119,4 +115,4 @@ class global.ParagraphIconButtonContainer
   destroy: ->
     @_iconButton.destroy()
     @_attentionSpan?.destroy()
-    @_robustParagraphHover?.destroy()
+    # TODO: unbind events
