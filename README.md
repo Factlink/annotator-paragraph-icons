@@ -35,6 +35,7 @@ paragraph.
   icons and Annotator.js itself would be loaded in a
   [jail iframe](https://github.com/Factlink/js-library/blob/825adb0548af92fc21d6f22b2deb9ec768a4a3f2/app/js/loader/loader_common.coffee)
   to further isolate scripts.
+- Refreshing when page content changes.
 
 ## Development
 ```bash
