@@ -10,11 +10,11 @@ See [index.html](http://factlink.github.io/annotator-paragraph-icons/) for a dem
 
 ## Examples
 
-### Example 1
+### Positioning next to paragraph
 
 ![](example1.png)
 
-### Example 2
+### Matching of text style
 
 ![](example2.png)
 
