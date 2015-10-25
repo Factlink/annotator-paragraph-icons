@@ -4,9 +4,12 @@ This is a port of the paragraph icons from the
 [Factlink annotation library](https://github.com/Factlink/js-library)
 to [Annotator.js](https://github.com/openannotation/annotator).
 The goal is to provide a discoverable annotation interface that integrates
-automatically with any website.
+automatically with any website. Just drop in the script, and it works!
 
-See [index.html](index.html) for a demonstration.
+See [index.html](http://factlink.github.io/annotator-paragraph-icons/) for a demonstration.
+
+![Example 1](example1.png)
+![Example 2](example2.png)
 
 ## Usage
 Download or clone this repo, and put this in your HTML:
