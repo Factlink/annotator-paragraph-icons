@@ -8,8 +8,15 @@ automatically with any website. Just drop in the script, and it works!
 
 See [index.html](http://factlink.github.io/annotator-paragraph-icons/) for a demonstration.
 
-![Example 1](example1.png)
-![Example 2](example2.png)
+## Examples
+
+### Example 1
+
+![](example1.png)
+
+### Example 2
+
+![](example2.png)
 
 ## Usage
 Download or clone this repo, and put this in your HTML:
