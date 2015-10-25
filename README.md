@@ -8,15 +8,9 @@ automatically with any website. Just drop in the script, and it works!
 
 See [index.html](http://factlink.github.io/annotator-paragraph-icons/) for a demonstration.
 
-## Examples
+### Example
 
-### Positioning next to paragraph
-
-![](example1.png)
-
-### Matching of text style
-
-![](example2.png)
+![](example.gif)
 
 ## Usage
 Download or clone this repo, and put this in your HTML:
